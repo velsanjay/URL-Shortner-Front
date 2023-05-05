@@ -13,8 +13,9 @@ function LongUrl() {
     try{
       let res = await axios.post(`${url}/new`,payload)
       toast.success(res.data.message)
+      let inp = document.querySelector('input')
+      inp.value='';
     }catch(error){
-      console.log(error.response.data);
       toast.error(error.response.data.message);
     }
   }
@@ -23,7 +24,7 @@ function LongUrl() {
     <div className='long' >
     <form className='form' onSubmit={handleSubmit}>
     <TextField 
-    label="Outlined secondary" 
+    label="Paste Your URL" 
     onChange={(e)=>setLongUrl(e.target.value)}
     color="secondary"/>
     <Button 

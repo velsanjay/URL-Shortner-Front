@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import axios from 'axios';
 import { url } from '../App';
+import SyncIcon from '@mui/icons-material/Sync';
 import { toast } from 'react-toastify';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -33,12 +34,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function CustomizedTables() {
     const [short, setShort] = useState([])
 
+    const Reload = async() =>{
+        try {
+            let res = await axios.get(`${url}`)
+            setShort(res.data.data)
+            toast.success(res.data.message)
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    }
+
     useEffect(() => {
         const consumeData = async () => {
             try {
                 let res = await axios.get(`${url}`)
                 setShort(res.data.data)
                 toast.success(res.data.message)
+                               
             } catch (error) {
                 toast.error(error.response.data.message)
             }
@@ -48,6 +60,11 @@ export default function CustomizedTables() {
 console.log(short);
     return (
         <div className='detail'>
+            <div style={{display:"flex",justifyContent:"flex-end"}}>
+                <SyncIcon
+                onClick={()=>Reload()}
+                />
+            </div>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead>
